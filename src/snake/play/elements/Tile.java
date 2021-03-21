@@ -4,7 +4,8 @@ import snake.Drawable;
 
 import java.awt.*;
 
-public class Tile extends Rectangle implements Drawable {
+public class Tile extends Rectangle implements Drawable
+{
     public boolean hasFood = false;
     public boolean hasSnake = false;
     public Color color = Color.BLACK;
@@ -20,7 +21,13 @@ public class Tile extends Rectangle implements Drawable {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(color);
+        if (hasSnake)
+            g.setColor(Color.GREEN);
+        else if (hasFood)
+            g.setColor(Color.RED);
+        else
+            g.setColor(color);
+
         g.fillRect(x, y, width, height);
     }
 

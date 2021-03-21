@@ -24,6 +24,8 @@ public class Play implements Playable
         this.game = game;
         this.board = new Board(s);
         this.snake = new Snake(this.board);
+        Score score = Score.getInstance();
+        score.value = 0;
     }
 
     public void run()
@@ -67,15 +69,10 @@ public class Play implements Playable
 //        }
     }
 
-    private void onWin()
-    {
-        Menu menu = MenuFactory.createWonGameMenu(game.getScreen());
-        game.goToMenu(menu);
-    }
-
     private void onLose()
     {
-        Menu menu = MenuFactory.createLostGameMenu(game.getScreen());
+        Score s = Score.getInstance();
+        Menu menu = MenuFactory.createLostGameMenu(game.getScreen(), s.value);
         game.goToMenu(menu);
     }
 

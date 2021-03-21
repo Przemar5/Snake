@@ -2,6 +2,7 @@ package snake.play.elements;
 
 import snake.Drawable;
 import snake.Screen;
+import snake.play.Score;
 
 import java.awt.*;
 import java.util.Random;
@@ -13,17 +14,14 @@ public class Board implements Drawable
     public final int TILES_X = 80;
     public final int TILES_Y = 60;
     public Tile[][] tiles;
-    public int foodX;
-    public int foodY;
+    public int foodX = -1;
+    public int foodY = -1;
     private int borderWidth = 10;
     private Screen screen;
 
     public Board(Screen screen)
     {
         this.screen = screen;
-        Random r = new Random();
-        foodX = r.nextInt(TILES_X);
-        foodY = r.nextInt(TILES_Y);
         int tileWidth = Math.round(WIDTH / TILES_X);
         int tileHeight = Math.round(HEIGHT / TILES_Y);
         tiles = new Tile[TILES_X][TILES_Y];
@@ -37,6 +35,23 @@ public class Board implements Drawable
                         tileHeight);
             }
         }
+        createFood();
+    }
+
+    public void createFood()
+    {
+        removeOldFood();
+        Random r = new Random();
+        foodX = r.nextInt(TILES_X);
+        foodY = r.nextInt(TILES_Y);
+        tiles[foodX][foodY].hasFood = true;
+    }
+
+    private void removeOldFood()
+    {
+        if (foodX != -1 && foodY != -1) {
+            tiles[foodX][foodY].hasFood = false;
+        }
     }
 
     @Override
@@ -44,10 +59,7 @@ public class Board implements Drawable
     {
         for (int i = 0; i < TILES_X; i++) {
             for (int j = 0; j < TILES_Y; j++) {
-                if (i == foodX && j == foodY)
-                    tiles[i][j].draw(g, Color.RED);
-                else
-                    tiles[i][j].draw(g);
+                tiles[i][j].draw(g);
             }
         }
 
@@ -72,5 +84,12 @@ public class Board implements Drawable
                 (screen.getHeight()-HEIGHT)/2,
                 borderWidth,
                 HEIGHT);
+
+        Score s = Score.getInstance();
+        int fontSize = (int) HEIGHT/12;
+        g.setFont(new Font("Arial", Font.PLAIN, fontSize));
+        g.drawString("Score: " + s.value,
+                (screen.getWidth()-WIDTH)/2,
+                (screen.getHeight()+HEIGHT)/2 + fontSize + borderWidth);
     }
 }

@@ -26,9 +26,10 @@ public class MenuFactory
         return MenuFactory.createGameFinishMenu(screen, "You have won!");
     }
 
-    public static Menu createLostGameMenu(Screen screen)
+    public static Menu createLostGameMenu(Screen screen, int score)
     {
-        return MenuFactory.createGameFinishMenu(screen, "You lost!");
+        return MenuFactory.createGameFinishMenu(screen,
+                "You scored " + score + " points!");
     }
 
     public static Menu createGameStopMenu(Screen screen)
